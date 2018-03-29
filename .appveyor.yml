@@ -1,0 +1,24 @@
+version: '{branch}-{build}'
+
+image: Visual Studio 2017
+
+clone_depth: 50
+
+environment:
+  REPO_DIR: &REPO_DIR c:\osrandom
+
+clone_folder: *REPO_DIR
+
+
+install:
+  - git submodule update --init --remote --recursive
+
+
+build_script:
+  # tests
+  - cd "%REPO_DIR%\test"
+  - build.bat
+  - run_tests.exe
+
+
+test: off
