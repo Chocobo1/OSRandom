@@ -96,7 +96,7 @@ class OSRandom
         using result_type = uint32_t;
 
         explicit OSRandom()
-            : m_randDev {fopen("/dev/random", "rb")}
+            : m_randDev {fopen("/dev/urandom", "rb")}
         {
         }
 
