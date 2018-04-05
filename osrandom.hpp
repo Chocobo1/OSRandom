@@ -80,7 +80,7 @@ class OSRandom
 };
 }
 
-#else  // __WIN32__
+#else  // _WIN32
 
 #include <cstdint>
 #include <cstdio>
@@ -149,6 +149,6 @@ class OSRandom
 };
 }
 
-#endif  // __WIN32__
+#endif  // _WIN32
 
 #endif  // CHOCOBO1_OSRANDOM_HPP
