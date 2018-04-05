@@ -7,8 +7,10 @@
 
 C++11 header-only OS Random Layer
 
-A header-only random layer that expose cryptographically secure pseudorandom number generators (CSPRNG) provided by OS.
-
+A header-only random layer that expose cryptographically secure pseudorandom number generators (CSPRNG) provided by OS:
+* Windows: [MSDN](https://msdn.microsoft.com/en-us//library/windows/desktop/aa387694(v=vs.85).aspx)
+* Linux: [man7](http://man7.org/linux/man-pages/man4/random.4.html)
+* FreeBSD: [man](https://www.freebsd.org/cgi/man.cgi?query=random&sektion=4)
 
 ## Prerequisites
 * Linux, *nix, BSD ...
@@ -18,7 +20,7 @@ A header-only random layer that expose cryptographically secure pseudorandom num
 * Windows
   * C++11 compiler
   * Warning: `NOMINMAX` is already defined and included before Windows.h header<br />
-    I.e. If you include Windows.h before this header, make sure `NOMINMAX` is defined before Windows.h
+    I.e. If you include Windows.h before this library, make sure `NOMINMAX` is defined before Windows.h
 * Run tests
   * [doctest C++ testing framework](https://github.com/onqtam/doctest)
 
