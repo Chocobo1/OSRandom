@@ -18,7 +18,9 @@
 #include <cwchar>
 #include <limits>
 
-#define NOMINMAX  // no one should use these abominations
+#ifndef NOMINMAX  // no one should use these abominations
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #undef min
 #undef max
