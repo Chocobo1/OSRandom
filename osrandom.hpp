@@ -124,9 +124,10 @@ class OSRandom
                 return 0;
 
             result_type buf = 0;
-            fread(&buf, sizeof(buf), 1, m_randDev);
+            if (fread(&buf, sizeof(buf), 1, m_randDev) == 1)
+                return buf;
 
-            return buf;
+            return 0;
         }
 
     // error diagnosis
