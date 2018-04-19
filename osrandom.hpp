@@ -48,7 +48,7 @@ class OSRandom
     public:
         using result_type = uint32_t;
 
-        explicit OSRandom()
+        OSRandom()
         {
             wchar_t sysPath[MAX_PATH] = {0};
 
@@ -89,7 +89,7 @@ class OSRandom
 
     private:
         using Sig = BOOLEAN (WINAPI *) (PVOID, ULONG);
-        Sig m_rtlGenRandomAPI = nullptr;
+        Sig m_rtlGenRandomAPI;
 };
 }
 
@@ -107,7 +107,7 @@ class OSRandom
     public:
         using result_type = uint32_t;
 
-        explicit OSRandom()
+        OSRandom()
             : m_randDev {fopen("/dev/urandom", "rb")}
         {
             if (!m_randDev)
@@ -157,7 +157,7 @@ class OSRandom
 
 
     private:
-        FILE *m_randDev = nullptr;
+        FILE *m_randDev;
 };
 }
 
