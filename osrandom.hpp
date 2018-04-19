@@ -12,6 +12,18 @@
 #ifndef CHOCOBO1_OSRANDOM_HPP
 #define CHOCOBO1_OSRANDOM_HPP
 
+#include <cstdio>
+#include <cstdlib>
+
+namespace Chocobo1
+{
+    void fatal(const char *msg)
+    {
+        fprintf(stderr, "%s\n", msg);
+        abort();
+    }
+}
+
 #ifdef _WIN32
 
 #include <cstdint>
@@ -42,7 +54,7 @@ class OSRandom
 
             const UINT len = ::GetSystemDirectoryW(sysPath, (MAX_PATH - 1));
             if (len == 0)
-                return;
+                fatal("GetSystemDirectoryW() failed");
 
             if (sysPath[len - 1] != L'\\')
                 wcscat_s(sysPath, MAX_PATH, L"\\");
@@ -50,6 +62,8 @@ class OSRandom
 
             m_rtlGenRandomAPI = reinterpret_cast<decltype(m_rtlGenRandomAPI)>(
                 ::GetProcAddress(::LoadLibraryW(sysPath), "SystemFunction036"));
+            if (!m_rtlGenRandomAPI)
+                fatal("Load RtlGenRandom() failed");
         }
 
         static constexpr result_type min()
@@ -64,15 +78,12 @@ class OSRandom
 
         result_type operator() ()
         {
-            if (!m_rtlGenRandomAPI)
-                return 0;
-
             result_type buf = 0;
             const bool result = m_rtlGenRandomAPI(&buf, sizeof(buf));
-            if (result)
-                return buf;
+            if (!result)
+                fatal("RtlGenRandom() failed");
 
-            return 0;
+            return buf;
         }
 
 
@@ -85,7 +96,6 @@ class OSRandom
 #else  // _WIN32
 
 #include <cstdint>
-#include <cstdio>
 #include <limits>
 
 namespace Chocobo1
@@ -100,6 +110,8 @@ class OSRandom
         explicit OSRandom()
             : m_randDev {fopen("/dev/urandom", "rb")}
         {
+            if (!m_randDev)
+                fatal("Open /dev/urandom failed");
         }
 
         ~OSRandom()
@@ -120,14 +132,11 @@ class OSRandom
 
         result_type operator() () const
         {
-            if (!m_randDev)
-                return 0;
-
             result_type buf = 0;
-            if (fread(&buf, sizeof(buf), 1, m_randDev) == 1)
-                return buf;
+            if (fread(&buf, sizeof(buf), 1, m_randDev) != 1)
+                fatal("Read /dev/urandom failed");
 
-            return 0;
+            return buf;
         }
 
     // error diagnosis
